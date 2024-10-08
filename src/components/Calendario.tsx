@@ -3,7 +3,9 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface Evento {
   id: string;
-  empleado: string;
+  empleado: string; // ID o nombre del empleado
+  nombreCompleto: string; // Nombre y apellidos
+  empleo: string; // Empleo del empleado
   fecha: string;
   tipo: 'G' | 'X' | 'V' | 'B';
 }
@@ -79,6 +81,7 @@ const Calendario: React.FC = () => {
     };
   }, [menuContextual]);
 
+  // Guardar eventos al agregar o eliminar eventos
   const guardarEventos = (nuevosEventos: Evento[]) => {
     setEventos(nuevosEventos);
     localStorage.setItem('eventos', JSON.stringify(nuevosEventos));
@@ -86,25 +89,42 @@ const Calendario: React.FC = () => {
 
   const agregarEvento = (tipo: 'G' | 'X' | 'V' | 'B') => {
     if (menuContextual) {
-      const fechaStr = menuContextual.fecha.toISOString().split('T')[0];
-      const eventoExistente = eventos.find(e => e.empleado === menuContextual.empleado && e.fecha === fechaStr);
-
-      if (!eventoExistente) {
-        const nuevoEvento: Evento = {
-          id: Date.now().toString(),
-          empleado: menuContextual.empleado,
-          fecha: fechaStr,
-          tipo,
-        };
-        guardarEventos([...eventos, nuevoEvento]);
+      // Crear la fecha sin horas y agregar un día
+      const fechaSinHora = new Date(menuContextual.fecha.getFullYear(), menuContextual.fecha.getMonth(), menuContextual.fecha.getDate() + 1);
+      const fechaStr = fechaSinHora.toISOString().split('T')[0]; // O usar .toLocaleDateString('en-CA')
+  
+      const empleadoSeleccionado = empleados.find(e => e.nombre === menuContextual.empleado);
+  
+      if (empleadoSeleccionado) {
+        const eventoExistente = eventos.find(e => e.empleado === menuContextual.empleado && e.fecha === fechaStr);
+  
+        if (!eventoExistente) {
+          const nuevoEvento: Evento = {
+            id: Date.now().toString(),
+            empleado: empleadoSeleccionado.nombre,
+            nombreCompleto: `${empleadoSeleccionado.nombre} ${empleadoSeleccionado.apellidos}`,
+            empleo: empleadoSeleccionado.empleo,
+            fecha: fechaStr,
+            tipo,
+          };
+          guardarEventos([...eventos, nuevoEvento]);
+        }
       }
       setMenuContextual(null);
     }
   };
+  
+  
 
   const eliminarEvento = (id: string) => {
-    guardarEventos(eventos.filter(evento => evento.id !== id));
+    // Filtrar los eventos para excluir el evento con el ID proporcionado
+    const eventosActualizados = eventos.filter(evento => evento.id !== id);
+    guardarEventos(eventosActualizados); // Guardar la nueva lista de eventos
+    
+    // Cerrar el menú contextual después de eliminar
+    setMenuContextual(null);
   };
+
   const diasEnMes = (fecha: Date) => {
     return new Date(fecha.getFullYear(), fecha.getMonth() + 1, 0).getDate();
   };
@@ -113,26 +133,31 @@ const Calendario: React.FC = () => {
     setFechaActual(new Date(fechaActual.getFullYear(), fechaActual.getMonth() + incremento, 1));
   };
 
-  const handleContextMenu = (e: React.MouseEvent, empleado: string, fecha: Date) => {
-    e.preventDefault();
 
-    const menuWidth = 200;
-    const menuX = e.clientX - menuWidth + 100;
-    const menuY = e.clientY;
+// Al buscar el evento que quieres eliminar, asegúrate de usar la misma lógica para construir la fecha
+const handleContextMenu = (e: React.MouseEvent, empleado: string, fecha: Date) => {
+  e.preventDefault();
 
-    const adjustedX = menuX < 0 ? 0 : menuX;
+  const menuWidth = 200;
+  const menuX = e.clientX - menuWidth + 100;
+  const menuY = e.clientY;
 
-    setMenuContextual({ x: adjustedX, y: menuY, empleado, fecha });
+  const adjustedX = menuX < 0 ? 0 : menuX;
 
-    const fechaStr = fecha.toISOString().split('T')[0];
-    const evento = eventos.find(e => e.empleado === empleado && e.fecha === fechaStr);
-    setEventoSeleccionado(evento || null);
-  };
+  setMenuContextual({ x: adjustedX, y: menuY, empleado, fecha });
 
-  const getEventosDelDia = (empleado: string, fecha: Date) => {
-    const fechaStr = fecha.toISOString().split('T')[0];
-    return eventos.filter(e => e.empleado === empleado && e.fecha === fechaStr);
-  };
+  // Ajustar la fecha para coincidir con el formato de guardado
+  const fechaStr = new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate() + 1).toISOString().split('T')[0];
+  const evento = eventos.find(e => e.empleado === empleado && e.fecha === fechaStr);
+  setEventoSeleccionado(evento || null); // Solo establecer el evento si existe
+};
+
+const getEventosDelDia = (empleado: string, fecha: Date) => {
+  // Al obtener la fecha para comparar, usamos +1 en el día para obtener la misma fecha guardada
+  const fechaStr = new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate() + 1).toISOString().split('T')[0];
+  return eventos.filter(e => e.empleado === empleado && e.fecha === fechaStr);
+};
+
 
   const obtenerDiaSemana = (fecha: Date) => {
     const diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
@@ -143,6 +168,7 @@ const Calendario: React.FC = () => {
     const dia = fecha.getDay();
     return dia === 0 || dia === 6;
   };
+
   return (
     <div className="flex flex-col items-center mx+1 p-1" style={{ maxWidth: '1900px', width: '100%' }}>
       <h2 className="text-lg font-bold mb-2 font-montserrat ml-1 text-center">Cuadrante Seguridad RT22</h2>
@@ -156,8 +182,8 @@ const Calendario: React.FC = () => {
             .replace(/de /gi, '') // Elimina "de" de la cadena
           }
         </span>
-        <button onClick={() => cambiarMes(1)} className="p-5 bg-gray-300 rounded shadow-md hover:bg-gray-400 transform active:scale-95 transition-transform duration-150">
-          <ChevronRight size={10} />
+        <button onClick={() => cambiarMes(1)} className="p-4 bg-gray-300 rounded shadow-md hover:bg-gray-400 transform active:scale-95 transition-transform duration-150">
+          <ChevronRight size={20} />
         </button>
       </div>
 

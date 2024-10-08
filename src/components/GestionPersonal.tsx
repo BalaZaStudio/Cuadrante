@@ -92,58 +92,67 @@ const GestionPersonal: React.FC = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto bg-gradient-to-r from-gray-100 to-gray-200 p-8 rounded-lg shadow-md">
-      <h2 className="text-3xl font-bold mb-6 text-center text-gray-800 font-montserrat">Gestión de Personal</h2>
-      <div className="mb-6 flex flex-col sm:flex-row items-center">
-        <input
-          type="text"
-          value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
-          placeholder="Nombre"
-          className="mb-2 sm:mb-0 sm:mr-2 p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-300"
-        />
-        <input
-          type="text"
-          value={apellidos}
-          onChange={(e) => setApellidos(e.target.value)}
-          placeholder="Apellidos"
-          className="mb-2 sm:mb-0 sm:mr-2 p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-300"
-        />
-        <select
-          value={puesto}
-          onChange={(e) => setPuesto(e.target.value)}
-          className="mb-2 sm:mb-0 sm:mr-2 p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-300"
-        >
-          <option value="">Seleccione puesto</option>
-          <option value="Comandante">Comandante</option>
-          <option value="Camaras">Camaras</option>
-        </select>
-        <select
-          value={empleo}
-          onChange={(e) => setEmpleo(e.target.value as 'Cabo 1' | 'Cabo' | 'Soldado')} // Asegurarse de que el valor sea del tipo correcto
-          className="mb-2 sm:mb-0 sm:mr-2 p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-300"
-        >
-          <option value="">Seleccione empleo</option>
-          <option value="Cabo 1">Cabo 1</option>
-          <option value="Cabo">Cabo</option>
-          <option value="Soldado">Soldado</option>
-        </select>
-        <input
-          type="date"
-          value={fechaAntiguedad}
-          onChange={(e) => setFechaAntiguedad(e.target.value)}
-          className="mb-2 sm:mb-0 sm:mr-2 p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-300"
-        />
-        {editando === null ? (
-          <button onClick={agregarEmpleado} className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-all">
-            Agregar
-          </button>
-        ) : (
-          <button onClick={actualizarEmpleado} className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition-all">
-            Actualizar
-          </button>
-        )}
-      </div>
+    <div className="max-w-4xl mx-auto bg-gradient-to-r from-gray-100 to-gray-400 p+1 rounded-lg shadow-md">
+      <h2 className="text-3xl font-bold mb+1 text-center text-gray-800 font-montserrat">Gestión de Personal</h2>
+      <div className="mb-6 flex flex-col sm:flex-row items-center justify-start space-x-2">
+  <input
+    type="text"
+    value={nombre}
+    onChange={(e) => setNombre(e.target.value)}
+    placeholder="Nombre"
+    className="mb-2 sm:mb-0 p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-300 w-32" // Ancho ajustado
+  />
+  <input
+    type="text"
+    value={apellidos}
+    onChange={(e) => setApellidos(e.target.value)}
+    placeholder="Apellidos"
+    className="mb-2 sm:mb-0 p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-300 w-33" // Ancho ajustado
+  />
+  <select
+    value={puesto}
+    onChange={(e) => setPuesto(e.target.value)}
+    className="mb-2 sm:mb-0 p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-300 w-33" // Ancho ajustado
+  >
+    <option value="">Seleccione puesto</option>
+    <option value="Comandante">Comandante</option>
+    <option value="Camaras">Camaras</option>
+  </select>
+  <select
+    value={empleo}
+    onChange={(e) => setEmpleo(e.target.value as 'Cabo 1' | 'Cabo' | 'Soldado')}
+    className="mb-2 sm:mb-0 p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-300 w-33" // Ancho ajustado
+  >
+    <option value="">Seleccione empleo</option>
+    <option value="Cabo 1">Cabo 1</option>
+    <option value="Cabo">Cabo</option>
+    <option value="Soldado">Soldado</option>
+  </select>
+  <input
+    type="date"
+    value={fechaAntiguedad}
+    onChange={(e) => setFechaAntiguedad(e.target.value)}
+    className="mb-2 sm:mb-0 p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-300 w-34" // Ancho ajustado
+  />
+  {editando === null ? (
+    <button
+      onClick={agregarEmpleado}
+      className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-all"
+    >
+      Agregar
+    </button>
+  ) : (
+    <button
+      onClick={actualizarEmpleado}
+      className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition-all"
+    >
+      Actualizar
+    </button>
+  )}
+</div>
+
+
+
       <ul>
         {ordenarEmpleados(empleados).map(emp => (
           <li key={emp.id} className="bg-white p-4 mb-2 rounded shadow flex justify-between items-center">

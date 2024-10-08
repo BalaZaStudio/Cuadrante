@@ -130,7 +130,7 @@ li button:hover {
 
 
 /* Estilo para móviles y tabletas */
-@media (max-width: 480px) {
+@media (max-width: 680px) {
   /* Ajuste de texto en cabecera */
   h2 {
     font-size: 1.25rem; /* Tamaño de texto más pequeño */
