@@ -1,7 +1,15 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
+  "compilerOptions": {
+    "target": "es5", // o la versión de ECMAScript que prefieras
+    "module": "commonjs", // o "esnext", dependiendo de tu configuración
+    "jsx": "react-jsx", // habilita JSX para React
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["es2015", "dom"]
+  },
+  "include": [
+    "src/**/*"
   ]
 }

@@ -2,4 +2,158 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Estilo general */
+body {
+  font-family: 'Montserrat', sans-serif; /* Corrigiendo el espacio en "font-family" */
+  background-color: #f9fafb; /* Color de fondo suave */
+  color: #333; /* Color del texto */
+  margin: 0;
+  padding: 0;
+}
+
+/* Encabezado */
+h2 {
+  color: #4a5568; /* Color para el encabezado */
+  text-align: center; /* Centramos el título */
+}
+
+/* Botones */
+button {
+  background-color: #03060a; /* Color de fondo de los botones */
+  color: white; /* Color del texto */
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px; /* Esquinas redondeadas */
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s; /* Transiciones suaves */
+  box-shadow: 0 9px 10px rgba(0, 0, 0, 0.1); /* Sombra para efecto 3D */
+}
+
+button:hover {
+  background-color: #95d5f3; /* Color al pasar el mouse */
+}
+
+button:active {
+  transform: scale(0.95); /* Efecto de presionado */
+}
+
+/* Tabla */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem; /* Espacio superior */
+  table-layout: auto; /* Permite que las columnas se ajusten automáticamente */
+}
+
+th, td {
+    text-align: center;
+    padding: 0.25rem; /* Espacio en celdas */
+  }
   
+
+/* Colores de eventos */
+.bg-red-500 {
+  background-color: rgba(239, 68, 68, 0.75); /* Color de evento Guardia */
+}
+
+.bg-yellow-500 {
+  background-color: rgba(234, 179, 8, 0.75); /* Color de evento Cambio */
+}
+
+.bg-green-500 {
+  background-color: rgba(34, 197, 94, 0.75); /* Color de evento Vacaciones */
+}
+
+.bg-purple-500 {
+  background-color: rgba(167, 139, 250, 0.75); /* Color de evento Baja */
+}
+
+/* Menú contextual */
+.absolute {
+  position: absolute;
+}
+
+.bg-white {
+  background-color: white; /* Fondo blanco para el menú */
+}
+
+.border {
+  border: 1px solid #101316; /* Borde del menú */
+}
+
+.rounded {
+  border-radius: 8px; /* Esquinas redondeadas del menú */
+}
+
+.shadow-lg {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra más intensa para el menú */
+}
+
+ul {
+  list-style: none; /* Eliminar puntos de la lista */
+  padding: 0;
+}
+
+li {
+  margin: 0.5rem 0; /* Margen entre elementos del menú */
+}
+
+/* Botones del menú contextual con colores diferentes */
+li button {
+  text-align: left; /* Alinear texto a la izquierda */
+  color: red;
+}
+
+li button:nth-child(1) {
+  background-color: #4caf50; /* Color verde para Guardias */
+  color: rgb(0, 0, 0);
+}
+
+li button:nth-child(2) {
+  background-color: #ff9800; /* Color naranja para Cambios */
+  color: white;
+}
+
+li button:nth-child(3) {
+  background-color: #2196f3; /* Color azul para Vacaciones */
+  color: white;
+}
+
+li button:nth-child(4) {
+  background-color: #f44336; /* Color rojo para Bajas */
+  color: white;
+}
+
+li button:hover {
+  background-color: #fc3030; /* Color de fondo al pasar el mouse sobre el menú */
+}
+
+
+/* Estilo para móviles y tabletas */
+@media (max-width: 480px) {
+  /* Ajuste de texto en cabecera */
+  h2 {
+    font-size: 1.25rem; /* Tamaño de texto más pequeño */
+  }
+
+  /* Ajuste de botones */
+  button {
+    padding: 0.25rem 0.5rem; /* Relleno más pequeño */
+    font-size: 0.875rem; /* Tamaño de texto más pequeño */
+  }
+
+  /* Ajustes en la tabla */
+  table {
+    font-size: 0.15rem; /* Tamaño de texto más pequeño */
+  }
+
+  th, td {
+    padding: 0.15rem; /* Relleno más pequeño */
+    width: 100%; /* Permitir que las celdas sean más flexibles */
+  }
+
+  /* Columna del personal */
+  th:first-child, td:first-child {
+    font-weight: bold; /* Resaltar nombre del personal */
+  }
+}
